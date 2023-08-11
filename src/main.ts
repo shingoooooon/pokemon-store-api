@@ -1,9 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.enableCors({
+    origin: process.env.WEB_URL,
+    credentials: true,
+  });
+
+  app.use(cookieParser());
 
   const config = new DocumentBuilder()
     .setTitle('Pokemon store')
@@ -12,8 +20,13 @@ async function bootstrap() {
     .addTag('pokemons')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('doc', app, document, {
+    swaggerOptions: {
+      withCredentials: true,
+    },
+  });
 
   await app.listen(8000);
 }
+
 bootstrap();
