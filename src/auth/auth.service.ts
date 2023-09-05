@@ -16,38 +16,38 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(loginDto: LoginDto, response: Response): Promise<void> {
-    const user = await this.userService.findOne(loginDto.email);
+  // async login(loginDto: LoginDto, response: Response): Promise<void> {
+  //   const user = await this.userService.findOne(loginDto.email);
 
-    if (!user) {
-      throw new BadRequestException('invalid credentials');
-    }
+  //   if (!user) {
+  //     throw new BadRequestException('invalid credentials');
+  //   }
 
-    if (!(await bcrypt.compare(loginDto.password, user.password))) {
-      throw new BadRequestException('invalid credentials');
-    }
+  //   if (!(await bcrypt.compare(loginDto.password, user.password))) {
+  //     throw new BadRequestException('invalid credentials');
+  //   }
 
-    const jwt = await this.jwtService.signAsync({ id: user.id });
+  //   const jwt = await this.jwtService.signAsync({ id: user.id });
 
-    response.cookie('jwt', jwt, { httpOnly: true });
-  }
+  //   response.cookie('jwt', jwt, { httpOnly: true });
+  // }
 
-  async getAuthUser(request: Request): Promise<any> {
-    try {
-      const cookie = request.cookies['jwt'];
-      const data = await this.jwtService.verifyAsync(cookie);
+  // async getAuthUser(request: Request): Promise<any> {
+  //   try {
+  //     const cookie = request.cookies['jwt'];
+  //     const data = await this.jwtService.verifyAsync(cookie);
 
-      if (!data) {
-        throw new UnauthorizedException();
-      }
+  //     if (!data) {
+  //       throw new UnauthorizedException();
+  //     }
 
-      const user = await this.userService.findOne(data['id']);
+  //     const user = await this.userService.findOne(data['id']);
 
-      const { password, ...result } = user;
+  //     const { password, ...result } = user;
 
-      return result;
-    } catch (err) {
-      throw new UnauthorizedException();
-    }
-  }
+  //     return result;
+  //   } catch (err) {
+  //     throw new UnauthorizedException();
+  //   }
+  // }
 }

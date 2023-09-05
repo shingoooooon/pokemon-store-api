@@ -25,45 +25,44 @@ export class AuthController {
     private jwtService: JwtService,
   ) {}
 
-  @HttpCode(HttpStatus.OK)
-  @Post('login')
-  @ApiBody({ type: LoginDto })
-  async login(
-    @Body() loginDto: LoginDto,
-    @Res({ passthrough: true }) response: Response,
-  ) {
-    const user = await this.userService.findOne(loginDto.email);
+  // @HttpCode(HttpStatus.OK)
+  // @Post('login')
+  // @ApiBody({ type: LoginDto })
+  // async login(
+  //   @Body() loginDto: LoginDto,
+  //   @Res({ passthrough: true }) response: Response,
+  // ) {
+  //   const user = await this.userService.findOne(loginDto.email);
 
-    if (!user) {
-      throw new BadRequestException('invalid credentials');
-    }
+  //   if (!user) {
+  //     throw new BadRequestException('invalid credentials');
+  //   }
 
-    if (!(await bcrypt.compare(loginDto.password, user.password))) {
-      throw new BadRequestException('invalid credentials');
-    }
+  //   if (!(await bcrypt.compare(loginDto.password, user.password))) {
+  //     throw new BadRequestException('invalid credentials');
+  //   }
 
-    const jwt = await this.jwtService.signAsync({ id: user.id });
+  //   const jwt = await this.jwtService.signAsync({ id: user.id });
 
-    response.cookie('jwt', jwt, { httpOnly: true });
+  //   response.cookie('jwt', jwt, { httpOnly: true });
 
-    return {
-      message: 'success',
-    };
-  }
+  //   return {
+  //     message: 'success',
+  //   };
+  // }
+  //   @Get('me')
+  //   async user(@Req() request: Request) {
+  //     const authUser = await this.authService.getAuthUser(request);
 
-  @Get('me')
-  async user(@Req() request: Request) {
-    const authUser = await this.authService.getAuthUser(request);
+  //     return authUser;
+  //   }
 
-    return authUser;
-  }
+  //   @Post('logout')
+  //   async logout(@Res({ passthrough: true }) response: Response) {
+  //     response.clearCookie('jwt');
 
-  @Post('logout')
-  async logout(@Res({ passthrough: true }) response: Response) {
-    response.clearCookie('jwt');
-
-    return {
-      message: 'success',
-    };
-  }
+  //     return {
+  //       message: 'success',
+  //     };
+  //   }
 }
