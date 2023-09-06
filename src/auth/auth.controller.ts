@@ -21,7 +21,6 @@ import * as bcrypt from 'bcrypt';
 export class AuthController {
   constructor(
     private authService: AuthService,
-    private readonly userService: UserService,
     private jwtService: JwtService,
   ) {}
 

@@ -9,23 +9,19 @@ import {
   Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './create-user.dto';
 import { ApiBody } from '@nestjs/swagger';
 import { UserEntity } from './user.entity';
 import { Request } from 'express';
-import { JwtService } from '@nestjs/jwt';
 import { IUser } from './user.inteface';
+import { LoginDto } from 'src/auth/login.dto';
 
 @Controller('users')
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private readonly userService: UserService) {}
 
   @Post()
-  async create(@Body() user: IUser) {
+  async create(@Body() user: IUser): Promise<IUser> {
     return this.userService.create(user);
   }
 
@@ -47,6 +43,11 @@ export class UserController {
   @Put(':id')
   async updateOne(@Param('id') id: string, @Body() user: IUser) {
     return this.userService.updateOne(Number(id), user);
+  }
+
+  @Post('login')
+  async login(@Body() loginDto: LoginDto) {
+    return this.userService.login(loginDto);
   }
 
   // @Post('register')

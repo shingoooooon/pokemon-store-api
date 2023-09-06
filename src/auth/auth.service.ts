@@ -1,20 +1,25 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './login.dto';
-import { UserService } from 'src/user/user.service';
 import { Request, Response } from 'express';
+import { IUser } from 'src/user/user.inteface';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private userService: UserService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private jwtService: JwtService) {}
+
+  generateJWT(user: IUser): Promise<string> {
+    return this.jwtService.signAsync({ user });
+  }
+
+  hashPassword(password: string) {
+    return bcrypt.hash(password, 12);
+  }
+
+  comparePasswords(password: string, hashPassword: string) {
+    return bcrypt.compare(password, hashPassword);
+  }
 
   // async login(loginDto: LoginDto, response: Response): Promise<void> {
   //   const user = await this.userService.findOne(loginDto.email);
