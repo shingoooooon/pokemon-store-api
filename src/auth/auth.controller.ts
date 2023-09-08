@@ -10,7 +10,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginDto } from './login.dto';
+import { LoginDto } from './request/login.dto';
 import { ApiBody } from '@nestjs/swagger';
 import { Response, Request } from 'express';
 import { JwtService } from '@nestjs/jwt';

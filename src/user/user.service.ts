@@ -4,7 +4,9 @@ import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { IUser } from './user.inteface';
 import { AuthService } from 'src/auth/auth.service';
-import { LoginDto } from 'src/auth/login.dto';
+import { LoginDto } from 'src/auth/request/login.dto';
+import { CreateUserDto } from './request/create-user.dto';
+import { Role } from 'src/auth/enum/role.enum';
 
 @Injectable()
 export class UserService {
@@ -14,19 +16,20 @@ export class UserService {
     private authService: AuthService,
   ) {}
 
-  async create(user: IUser) {
+  async create(createUserDto: CreateUserDto) {
     const passwordHash: string = await this.authService.hashPassword(
-      user.password,
+      createUserDto.password,
     );
 
-    const newUser = new UserEntity();
-    newUser.name = user.name;
-    newUser.email = user.email;
-    newUser.password = passwordHash;
+    const user = new UserEntity();
+    user.name = createUserDto.name;
+    user.email = createUserDto.email;
+    user.roles = Role.USER;
+    user.password = passwordHash;
 
-    const createdUser: IUser = await this.userRepository.save(newUser);
-    if (createdUser) {
-      const { password, ...result } = createdUser;
+    const newUser: IUser = await this.userRepository.save(user);
+    if (newUser) {
+      const { password, ...result } = newUser;
       return result;
     } else {
       throw new BadRequestException();
@@ -61,10 +64,13 @@ export class UserService {
   }
 
   updateOne(id: number, user: IUser): Promise<any> {
-    if (user.email || user.password) {
+    if (user.email || user.password || user.roles) {
       throw new BadRequestException();
     }
+    return this.userRepository.update(id, user);
+  }
 
+  updateRoleOfUser(id: number, user: IUser): Promise<any> {
     return this.userRepository.update(id, user);
   }
 
