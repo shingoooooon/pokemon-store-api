@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
@@ -13,6 +18,7 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @Inject(forwardRef(() => AuthService))
     private authService: AuthService,
   ) {}
 
@@ -72,34 +78,5 @@ export class UserService {
 
   updateRoleOfUser(id: number, user: IUser): Promise<any> {
     return this.userRepository.update(id, user);
-  }
-
-  async login(loginDto: LoginDto) {
-    const validateUser = await this.validateUser(
-      loginDto.email,
-      loginDto.password,
-    );
-
-    if (validateUser) {
-      return { access_token: await this.authService.generateJWT(validateUser) };
-    } else {
-      return new BadRequestException();
-    }
-  }
-
-  async validateUser(email: string, password: string) {
-    const user = await this.findOne(email);
-
-    const isValidated = await this.authService.comparePasswords(
-      password,
-      user.password,
-    );
-
-    if (isValidated) {
-      const { password, ...result } = user;
-      return result;
-    } else {
-      throw new BadRequestException();
-    }
   }
 }

@@ -1,13 +1,24 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  forwardRef,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './request/login.dto';
 import { Request, Response } from 'express';
 import { IUser } from 'src/user/user.inteface';
+import { UserService } from 'src/user/user.service';
+import { TokenResDto } from './response/token-res.dto';
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    @Inject(forwardRef(() => UserService))
+    private userService: UserService,
+    private jwtService: JwtService,
+  ) {}
 
   generateJWT(user: IUser): Promise<string> {
     return this.jwtService.signAsync({ user });
@@ -21,38 +32,28 @@ export class AuthService {
     return bcrypt.compare(password, hashPassword);
   }
 
-  // async login(loginDto: LoginDto, response: Response): Promise<void> {
-  //   const user = await this.userService.findOne(loginDto.email);
+  async login(user: IUser) {
+    const response = new TokenResDto();
+    const token = await this.generateJWT(user);
+    return { ...response, accessToken: token };
+  }
 
-  //   if (!user) {
-  //     throw new BadRequestException('invalid credentials');
-  //   }
+  async logout(user: { rjwt: string }): Promise<{ token: string }> {
+    // TODO revoke token
+    return { token: '' };
+  }
 
-  //   if (!(await bcrypt.compare(loginDto.password, user.password))) {
-  //     throw new BadRequestException('invalid credentials');
-  //   }
-
-  //   const jwt = await this.jwtService.signAsync({ id: user.id });
-
-  //   response.cookie('jwt', jwt, { httpOnly: true });
-  // }
-
-  // async getAuthUser(request: Request): Promise<any> {
-  //   try {
-  //     const cookie = request.cookies['jwt'];
-  //     const data = await this.jwtService.verifyAsync(cookie);
-
-  //     if (!data) {
-  //       throw new UnauthorizedException();
-  //     }
-
-  //     const user = await this.userService.findOne(data['id']);
-
-  //     const { password, ...result } = user;
-
-  //     return result;
-  //   } catch (err) {
-  //     throw new UnauthorizedException();
-  //   }
-  // }
+  async validateUser(loginDto: LoginDto) {
+    const user = await this.userService.findOne(loginDto.email);
+    const isValidated = await this.comparePasswords(
+      loginDto.password,
+      user.password,
+    );
+    if (isValidated) {
+      const { password, ...result } = user;
+      return result;
+    } else {
+      throw new BadRequestException();
+    }
+  }
 }

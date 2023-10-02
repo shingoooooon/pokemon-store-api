@@ -6,20 +6,21 @@ import {
   Param,
   Post,
   Put,
-  Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './request/create-user.dto';
-import { ApiBody } from '@nestjs/swagger';
-import { UserEntity } from './user.entity';
-import { Request } from 'express';
 import { IUser } from './user.inteface';
-import { LoginDto } from 'src/auth/request/login.dto';
 import { Roles } from 'src/auth/decorator/roles.decorator';
 import { Role } from 'src/auth/enum/role.enum';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-guards';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { v4 as uuidv4 } from 'uuid';
+import path = require('path');
 
 @Controller('users')
 export class UserController {
@@ -62,8 +63,21 @@ export class UserController {
     return this.userService.updateRoleOfUser(Number(id), user);
   }
 
-  @Post('login')
-  async login(@Body() loginDto: LoginDto): Promise<any> {
-    return this.userService.login(loginDto);
+  @Post('upload')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './upload/profileimages',
+        filename: (req, file, cb) => {
+          const fileName: string =
+            path.parse(file.originalname).name.replace(/\s/, '') + uuidv4();
+          const extension: string = path.parse(file.originalname).ext;
+          cb(null, `${fileName}${extension}`);
+        },
+      }),
+    }),
+  )
+  async uploadFile(@UploadedFile() file: Express.Multer.File): Promise<object> {
+    return { imagePath: file.path };
   }
 }

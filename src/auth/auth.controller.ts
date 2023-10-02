@@ -7,61 +7,42 @@ import {
   HttpStatus,
   Post,
   Req,
+  Request,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './request/login.dto';
-import { ApiBody } from '@nestjs/swagger';
-import { Response, Request } from 'express';
+import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
+import { JwtAuthGuard } from './guards/jwt-guards';
+import { LoginResDto } from './response/login-res.dto';
+import { Auth, AuthJwt } from './decorator/auth.decorator';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private authService: AuthService,
-    private jwtService: JwtService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
-  // @HttpCode(HttpStatus.OK)
-  // @Post('login')
-  // @ApiBody({ type: LoginDto })
-  // async login(
-  //   @Body() loginDto: LoginDto,
-  //   @Res({ passthrough: true }) response: Response,
-  // ) {
-  //   const user = await this.userService.findOne(loginDto.email);
+  @Post('login')
+  @HttpCode(HttpStatus.OK)
+  async login(@Body() loginDto: LoginDto): Promise<LoginResDto> {
+    const user = await this.authService.validateUser(loginDto);
+    const token = await this.authService.login(user);
+    return { user, token };
+  }
 
-  //   if (!user) {
-  //     throw new BadRequestException('invalid credentials');
-  //   }
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  @Auth()
+  logout(@AuthJwt() user: { rjwt: string }): Promise<{ token: string }> {
+    return this.authService.logout(user);
+  }
 
-  //   if (!(await bcrypt.compare(loginDto.password, user.password))) {
-  //     throw new BadRequestException('invalid credentials');
-  //   }
-
-  //   const jwt = await this.jwtService.signAsync({ id: user.id });
-
-  //   response.cookie('jwt', jwt, { httpOnly: true });
-
-  //   return {
-  //     message: 'success',
-  //   };
-  // }
-  //   @Get('me')
-  //   async user(@Req() request: Request) {
-  //     const authUser = await this.authService.getAuthUser(request);
-
-  //     return authUser;
-  //   }
-
-  //   @Post('logout')
-  //   async logout(@Res({ passthrough: true }) response: Response) {
-  //     response.clearCookie('jwt');
-
-  //     return {
-  //       message: 'success',
-  //     };
-  //   }
+  @Get('me')
+  @UseGuards(JwtAuthGuard)
+  getProfile(@Request() req) {
+    return req.user;
+  }
 }
