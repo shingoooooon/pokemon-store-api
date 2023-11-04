@@ -1,5 +1,5 @@
-import { TimestampSoftDeleteMigration } from 'db/common/timestamp-soft-delete.migration';
-import { Role } from 'src/auth/enum/role.enum';
+import { TimestampSoftDeleteMigration } from '../common';
+import { Role } from '../../src/auth/enum/role.enum';
 import { TableColumnOptions } from 'typeorm';
 
 export class CreateTableUsers1696557853037 extends TimestampSoftDeleteMigration {
