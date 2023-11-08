@@ -13,8 +13,6 @@ export class Insert001Users implements Seeder {
       }
 
       const repo = dataSource.getRepository(UserEntity);
-      console.log('repo!!!!!!!!!!!');
-      console.log(repo);
       await repo.save(data);
     } catch (error) {
       console.info(error);
