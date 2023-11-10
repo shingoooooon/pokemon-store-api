@@ -1,5 +1,5 @@
 import { readFileSync } from 'jsonfile';
-import { PokemonEntity } from 'src/pokemon/entities/pokemon.entity';
+import { PokemonEntity } from 'src/pokemon/pokemon.entity';
 import type { DataSource } from 'typeorm';
 import type { Factory, Seeder } from 'typeorm-seeding';
 

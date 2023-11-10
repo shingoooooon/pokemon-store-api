@@ -3,7 +3,7 @@
     "name": "Blastoise",
     "price": 20,
     "description": "Gain heat resistance for 3 minutes.",
-    "img": "/img/blastoise.png",
+    "imgPath": "/img/blastoise.png",
     "id": 1,
     "type1": "water",
     "type2": ""
@@ -12,7 +12,7 @@
     "name": "Charmander",
     "price": 100,
     "description": "Hammer infused with posion gem magic.",
-    "img": "/img/charmander.png",
+    "imgPath": "/img/charmander.png",
     "id": 2,
     "type1": "fire",
     "type2": ""
@@ -21,7 +21,7 @@
     "name": "Gengar",
     "price": 50,
     "description": "Shield passed down the by tribe of Ancients.",
-    "img": "/img/gengar.png",
+    "imgPath": "/img/gengar.png",
     "id": 3,
     "type1": "ghost",
     "type2": "poison"
@@ -30,7 +30,7 @@
     "name": "Bellsprout",
     "price": 75,
     "description": "Casts a magic protection barrier.",
-    "img": "/img/bellsprout.png",
+    "imgPath": "/img/bellsprout.png",
     "id": 4,
     "type1": "grass",
     "type2": "poison"
@@ -39,7 +39,7 @@
     "name": "Bulbasaur",
     "price": 120,
     "description": "Sharp sword the can cut through armour.",
-    "img": "/img/bulbasaur.png",
+    "imgPath": "/img/bulbasaur.png",
     "id": 5,
     "type1": "grass",
     "type2": "poison"
@@ -48,7 +48,7 @@
     "name": "Dragonair",
     "price": 200,
     "description": "Summon the undead to aid in battle.",
-    "img": "/img/dragonair.png",
+    "imgPath": "/img/dragonair.png",
     "id": 6,
     "type1": "dragon",
     "type2": ""
@@ -57,7 +57,7 @@
     "name": "Ivysaur",
     "price": 30,
     "description": "Makes the owner immune to poison.",
-    "img": "/img/ivysaur.png",
+    "imgPath": "/img/ivysaur.png",
     "id": 7,
     "type1": "grass",
     "type2": "poison"
@@ -66,7 +66,7 @@
     "name": "Mew",
     "price": 30,
     "description": "Restores user back to full health.",
-    "img": "/img/mew.png",
+    "imgPath": "/img/mew.png",
     "id": 8,
     "type1": "psychic",
     "type2": ""
@@ -75,7 +75,7 @@
     "name": "Pidgey",
     "price": 150,
     "description": "Attack foes with burning energy.",
-    "img": "/img/pidgey.png",
+    "imgPath": "/img/pidgey.png",
     "id": 9,
     "type1": "normal",
     "type2": "flying"
@@ -84,7 +84,7 @@
     "name": "Sandshrew",
     "price": 50,
     "description": "Throw at the ground to explode.",
-    "img": "/img/sandshrew.png",
+    "imgPath": "/img/sandshrew.png",
     "id": 10,
     "type1": "ground",
     "type2": ""
@@ -93,7 +93,7 @@
     "name": "Charmeleon",
     "price": 500,
     "description": "Opens a chest sealed by darkness.",
-    "img": "/img/charmeleon.png",
+    "imgPath": "/img/charmeleon.png",
     "id": 11,
     "type1": "fire",
     "type2": ""
@@ -102,7 +102,7 @@
     "name": "Mewtwo",
     "price": 100,
     "description": "Used to trade with the mountain dwarves.",
-    "img": "/img/mewtwo.png",
+    "imgPath": "/img/mewtwo.png",
     "id": 12,
     "type1": "psychic",
     "type2": ""
@@ -111,7 +111,7 @@
     "name": "Squirtle",
     "price": 100,
     "description": "Used to trade with the mountain dwarves.",
-    "img": "/img/squirtle.png",
+    "imgPath": "/img/squirtle.png",
     "id": 13,
     "type1": "water",
     "type2": ""
@@ -120,7 +120,7 @@
     "name": "Venusaur",
     "price": 100,
     "description": "Used to trade with the mountain dwarves.",
-    "img": "/img/venusaur.png",
+    "imgPath": "/img/venusaur.png",
     "id": 14,
     "type1": "grass",
     "type2": "poison"

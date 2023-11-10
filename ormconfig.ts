@@ -16,7 +16,8 @@ config();
 
 export default new DataSource({
   ...database(),
-  entities: ['dist/**/*.entity.ts'],
+  entities: [],
+  // entities: ['dist/**/*.entity.ts'],
   migrations: ['db/migrations/*.ts'],
 });
 
