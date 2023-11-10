@@ -13,10 +13,6 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginDto } from './request/login.dto';
-import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
-import { JwtService } from '@nestjs/jwt';
-import { UserService } from 'src/user/user.service';
-import * as bcrypt from 'bcrypt';
 import { JwtAuthGuard } from './guards/jwt-guards';
 import { LoginResDto } from './response/login-res.dto';
 import { Auth, AuthJwt } from './decorator/auth.decorator';
@@ -28,7 +24,6 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(@Body() loginDto: LoginDto): Promise<LoginResDto> {
-    console.log(loginDto);
     const user = await this.authService.validateUser(loginDto);
     const token = await this.authService.login(user);
     return { user, token };

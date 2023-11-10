@@ -7,7 +7,6 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './request/login.dto';
-import { Request, Response } from 'express';
 import { IUser } from 'src/user/user.inteface';
 import { UserService } from 'src/user/user.service';
 import { TokenResDto } from './response/token-res.dto';
@@ -49,6 +48,7 @@ export class AuthService {
       loginDto.password,
       user.password,
     );
+
     if (isValidated) {
       const { password, ...result } = user;
       return result;

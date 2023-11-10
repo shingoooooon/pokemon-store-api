@@ -3,14 +3,14 @@
     "id": 1,
     "name": "admin",
     "email": "admin@gmail.com",
-    "password": "password",
+    "password": "$2b$12$JLOgoP19L6PO8RX3OEL7X.HxWfV.WOKqWn1qHlhL1ra.r8cqQiivK",
     "roles": "admin"
   },
   {
     "id": 2,
     "name": "user",
     "email": "user@gmail.com",
-    "password": "password",
+    "password": "$2b$12$JLOgoP19L6PO8RX3OEL7X.HxWfV.WOKqWn1qHlhL1ra.r8cqQiivK",
     "role": "user"
   }
 ]
